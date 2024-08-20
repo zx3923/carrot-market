@@ -23,14 +23,14 @@ export default function SocialLogin() {
               clipRule="evenodd"
             ></path>
           </svg>
-          <span>Continue with Github</span>
+          <span>깃허브로 가입하기</span>
         </Link>
         <Link
           className="primary-btn flex h-10 items-center justify-center gap-2"
           href="/sms"
         >
           <ChatBubbleOvalLeftEllipsisIcon className="size-6" />
-          <span>Continue with SMS</span>
+          <span>휴대폰 번호로 가입하기</span>
         </Link>
       </div>
     </>
