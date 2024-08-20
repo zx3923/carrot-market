@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: "양진체";
-  src: url("https://fastly.jsdelivr.net/gh/supernovice-lab/font@0.9/yangjin.woff")
+  font-family: "CookieRun-Regular";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/CookieRun-Regular.woff")
     format("woff");
   font-weight: normal;
   font-style: normal;
@@ -16,6 +16,12 @@
   }
 }
 
+@layer components {
+  .primary-btn {
+    @apply w-full bg-orange-500 text-white  font-medium  rounded-md text-center hover:bg-orange-400 transition-colors;
+  }
+}
+
 body {
-  font-family: 양진체;
+  font-family: CookieRun-Regular;
 }
