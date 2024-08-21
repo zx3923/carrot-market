@@ -2,10 +2,15 @@
 import Button from "@/components/button";
 import Input from "@/components/input";
 import { useFormState } from "react-dom";
-import { smsVerification } from "./actions";
+import { smsLogIn } from "./actions";
+
+const initialState = {
+  token: false,
+  error: undefined,
+};
 
 export default function SMSLogin() {
-  const [state, action] = useFormState(smsVerification, null);
+  const [state, action] = useFormState(smsLogIn, initialState);
   return (
     <div className="flex flex-col gap-10 py-8 px-6">
       <div className="flex flex-col gap-2 *:font-medium">
@@ -17,19 +22,25 @@ export default function SMSLogin() {
         </h2>
       </div>
       <form action={action} className="flex flex-col gap-3">
-        <Input
-          name="phone"
-          type="number"
-          placeholder="휴대폰 번호(-없이 숫자만 입력)"
-          required
-        />
-        <Input
-          name="token"
-          type="number"
-          placeholder="인증번호 입력"
-          required
-        />
-        <Button text="인즌문자 받기" />
+        {state.token ? (
+          <Input
+            name="token"
+            type="number"
+            placeholder="인증번호 입력"
+            required
+            min={100000}
+            max={999999}
+          />
+        ) : (
+          <Input
+            name="phone"
+            type="text"
+            placeholder="휴대폰 번호(-없이 숫자만 입력)"
+            required
+            errors={state.error?.formErrors}
+          />
+        )}
+        <Button text={state.token ? "문자 인증하기" : "인즌문자 받기"} />
       </form>
     </div>
   );
