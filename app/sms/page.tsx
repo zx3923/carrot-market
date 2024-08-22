@@ -3,6 +3,7 @@ import Button from "@/components/button";
 import Input from "@/components/input";
 import { useFormState } from "react-dom";
 import { smsLogIn } from "./actions";
+import TokenInput from "@/components/token-input";
 
 const initialState = {
   token: false,
@@ -23,13 +24,14 @@ export default function SMSLogin() {
       </div>
       <form action={action} className="flex flex-col gap-3">
         {state.token ? (
-          <Input
+          <TokenInput // input이 초기화 되지 않아 다른 컴포넌트로 구분
             name="token"
             type="number"
             placeholder="인증번호 입력"
             required
             min={100000}
             max={999999}
+            errors={state.error?.formErrors}
           />
         ) : (
           <Input
@@ -40,7 +42,7 @@ export default function SMSLogin() {
             errors={state.error?.formErrors}
           />
         )}
-        <Button text={state.token ? "문자 인증하기" : "인즌문자 받기"} />
+        <Button text={state.token ? "문자 인증하기" : "인증문자 받기"} />
       </form>
     </div>
   );
