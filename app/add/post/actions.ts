@@ -1,7 +1,6 @@
 "use server";
 
 import { z } from "zod";
-import fs from "fs/promises";
 import db from "@/lib/db";
 import { redirect } from "next/navigation";
 import { getSession } from "@/lib/session";
@@ -28,11 +27,6 @@ export async function uploadProduct(prevState: any, formData: FormData) {
     price: formData.get("price"),
     description: formData.get("description"),
   };
-  if (data.photo instanceof File) {
-    const photoData = await data.photo.arrayBuffer();
-    await fs.appendFile(`./public/${data.photo.name}`, Buffer.from(photoData));
-    data.photo = `/${data.photo.name}`;
-  }
   const result = productSchema.safeParse(data);
   if (!result.success) {
     return result.error.flatten();
@@ -73,4 +67,30 @@ export async function getUploadUrl() {
   );
   const data = await response.json();
   return data;
+}
+
+export async function deleteProduct(id: number) {
+  const product = await db.product.delete({
+    where: {
+      id,
+    },
+    select: {
+      photo: true,
+    },
+  });
+  const imageId = product.photo.split(
+    "https://imagedelivery.net/ZP9kJzPJnmRlD3LZ99JLsg/"
+  )[1];
+
+  await fetch(
+    `https://api.cloudflare.com/client/v4/accounts/${process.env.CLOUDFLARE_ACCOUNT_ID}/images/v1/${imageId}`,
+    {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${process.env.CLOUDFLARE_ACCOUNT_TOKEN}`,
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  redirect("/products");
 }
