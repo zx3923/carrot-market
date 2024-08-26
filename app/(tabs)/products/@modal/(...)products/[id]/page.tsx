@@ -4,6 +4,8 @@ import { formatToWon } from "@/lib/utils";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { UserIcon } from "@heroicons/react/24/solid";
+import { getSession } from "@/lib/session";
+import Link from "next/link";
 
 async function getProduct(id: number) {
   const product = await db.product.findUnique({
@@ -25,10 +27,11 @@ async function getProduct(id: number) {
 export default async function Modal({ params }: { params: { id: string } }) {
   const id = Number(params.id);
   const product = await getProduct(id);
-
   if (!product) {
     return notFound();
   }
+  const session = await getSession();
+  const isOwner = session.id === product.userId;
 
   return (
     <div className="max-w-screen-sm flex justify-center items-center bg-black bg-opacity-60">
@@ -72,6 +75,14 @@ export default async function Modal({ params }: { params: { id: string } }) {
               <h3 className="text-lg font-medium text-gray-800">
                 {product.user.user_name}
               </h3>
+              {isOwner ? (
+                <Link
+                  href={`/products/${id}/edit`}
+                  className="flex items-center justify-center px-2.5 py-1.5 bg-blue-500 rounded-md text-white font-semibold text-nowrap"
+                >
+                  편집
+                </Link>
+              ) : null}
             </div>
           </div>
         </div>
