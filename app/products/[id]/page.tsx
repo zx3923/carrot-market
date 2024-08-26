@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { UserIcon } from "@heroicons/react/24/solid";
 import { formatToWon } from "@/lib/utils";
 import Link from "next/link";
+import DeleteBtn from "@/components/delete-btn";
 
 async function getProduct(id: number) {
   const product = await db.product.findUnique({
@@ -21,6 +22,13 @@ async function getProduct(id: number) {
     },
   });
   return product;
+}
+
+export async function generateMetadata({ params }: { params: { id: string } }) {
+  const product = await getProduct(Number(params.id));
+  return {
+    title: product?.title,
+  };
 }
 
 async function getIsOwner(userId: number) {
@@ -76,9 +84,10 @@ export default async function ProductDetail({
           {formatToWon(product.price)}원
         </span>
         {isOwner ? (
-          <button className="bg-red-500 px-5 py-2.5 rounded-md text-white font-semibold">
-            Delete product
-          </button>
+          // <button className="bg-red-500 px-5 py-2.5 rounded-md text-white font-semibold">
+          //   Delete product
+          // </button>
+          <DeleteBtn id={id} />
         ) : null}
         <Link
           className="bg-orange-500 px-5 py-2.5 rounded-md text-white font-semibold"
