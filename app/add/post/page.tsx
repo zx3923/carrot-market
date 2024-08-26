@@ -20,8 +20,23 @@ export default function AddProduct() {
       return;
     }
     const file = files[0];
+
+    if (!file.type.startsWith("image/")) {
+      return {
+        error: "이미지 파일만 업로드 가능합니다.",
+      };
+    }
+    const fileSizeInMb = file.size / (1024 * 1024);
+
+    if (fileSizeInMb > 2) {
+      return {
+        error: "이미지의 크기가 2MB를 초과하는 이미지는 업로드 할 수 없습니다.",
+      };
+    }
+    // 새로 선택된 이미지의 미리보기 URL 생성
     const url = URL.createObjectURL(file);
     setPreview(url);
+
     const { success, result } = await getUploadUrl();
     if (success) {
       const { id, uploadURL } = result;
