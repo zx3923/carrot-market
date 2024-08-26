@@ -4,6 +4,7 @@ import { z } from "zod";
 import db from "@/lib/db";
 import { redirect } from "next/navigation";
 import { getSession } from "@/lib/session";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 const productSchema = z.object({
   photo: z.string({
@@ -54,6 +55,9 @@ export async function editAction(prevState: any, formData: FormData) {
           id: true,
         },
       });
+
+      revalidatePath("/products");
+      revalidateTag("product-detail");
       redirect(`/products/${updateProduct.id}`);
       //redirect("/products")
     }
