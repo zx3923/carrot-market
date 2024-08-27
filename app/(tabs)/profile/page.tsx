@@ -2,6 +2,10 @@ import db from "@/lib/db";
 import { getSession } from "@/lib/session";
 import { notFound, redirect } from "next/navigation";
 
+export const metadata = {
+  title: "프로필",
+};
+
 async function getUser() {
   const session = await getSession();
   if (session.id) {
@@ -26,10 +30,10 @@ export default async function Profile() {
     redirect("/");
   };
   return (
-    <div>
-      <h1>Welcome! {user?.user_name}!</h1>
+    <div className="p-5 flex flex-col">
+      <h1>안녕하세요! {user?.user_name} 님!</h1>
       <form action={logOut}>
-        <button>Log out</button>
+        <button>로그아웃</button>
       </form>
     </div>
   );
