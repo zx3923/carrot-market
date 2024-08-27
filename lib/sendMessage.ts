@@ -26,4 +26,4 @@ async function sendMessage(to: string, text: string) {
 }
 
 // 모듈 내보내기
-module.exports = sendMessage;
+export default sendMessage;
