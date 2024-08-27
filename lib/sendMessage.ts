@@ -8,7 +8,7 @@ const from = process.env.CALLER_ID;
 const messageService = new coolsms(api_key, api_secret_key);
 
 // 메시지 전송 함수
-async function sendMessage(to: string, text: string) {
+export async function sendMessage(to: string, text: string) {
   console.log(to);
   console.log(text);
   try {
@@ -24,6 +24,3 @@ async function sendMessage(to: string, text: string) {
     console.error("메시지 전송 실패:", error);
   }
 }
-
-// 모듈 내보내기
-export default sendMessage;

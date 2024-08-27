@@ -6,7 +6,7 @@ import validator from "validator";
 import { redirect } from "next/navigation";
 import db from "@/lib/db";
 import { successLogin } from "@/lib/session";
-import sendMessage from "@/lib/sendMessage";
+import { sendMessage } from "@/lib/sendMessage";
 
 const phoneSchema = z
   .string()
