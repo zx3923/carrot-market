@@ -25,3 +25,7 @@
 body {
   font-family: CookieRun-Regular;
 }
+
+.chat-box {
+  width: calc(100% - 5rem);
+}
