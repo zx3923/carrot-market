@@ -33,7 +33,8 @@ export default async function Products() {
   const initialProducts = await getInitialProducts();
 
   return (
-    <div>
+    <div className="p-4">
+      <h1 className="text-2xl font-bold">상품</h1>
       <ProductList initialProducts={initialProducts} />
       <Link
         href="/add/post"
