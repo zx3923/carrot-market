@@ -10,6 +10,7 @@ export async function getMoreProducts(page: number) {
       created_at: true,
       photo: true,
       id: true,
+      sale_status: true,
     },
     skip: page * 5,
     take: 5,

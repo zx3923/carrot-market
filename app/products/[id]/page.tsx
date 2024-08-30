@@ -96,6 +96,37 @@ export default async function ProductDetail({
     redirect(`/chats/${room.id}`);
   };
 
+  const buyProduct = async () => {
+    "use server";
+    const session = await getSession();
+    if (session.id) {
+      const existingPurchase = await db.purchase.findFirst({
+        where: {
+          productId: id,
+        },
+      });
+      if (existingPurchase) {
+        notFound();
+      } else {
+        const product = await db.product.update({
+          where: {
+            id,
+          },
+          data: {
+            sale_status: 1,
+          },
+        });
+        const buyProduct = await db.purchase.create({
+          data: {
+            buyerId: session.id,
+            productId: id,
+          },
+        });
+      }
+    }
+    redirect("/products");
+  };
+
   return (
     <div>
       <div className="relative aspect-square">
@@ -133,9 +164,10 @@ export default async function ProductDetail({
           <DeleteBtn id={id} />
         ) : null}
         <form action={createChatRoom}>
-          <button className="bg-orange-500 px-5 py-2.5 rounded-md text-white font-semibold">
-            채팅하기
-          </button>
+          <button className="primary-btn text-lg p-2.5">채팅하기</button>
+        </form>
+        <form action={buyProduct}>
+          <button className="primary-btn text-lg p-2.5">구매하기</button>
         </form>
       </div>
     </div>

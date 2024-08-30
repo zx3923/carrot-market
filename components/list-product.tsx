@@ -8,6 +8,7 @@ interface ListProductProps {
   created_at: Date;
   photo: string;
   id: number;
+  sale_status: number;
 }
 
 export default function ListProduct({
@@ -16,6 +17,7 @@ export default function ListProduct({
   created_at,
   photo,
   id,
+  sale_status,
 }: ListProductProps) {
   return (
     <Link href={`/products/${id}`} className="flex gap-5">
@@ -33,6 +35,7 @@ export default function ListProduct({
           {formatToTimeAgo(created_at.toString())}
         </span>
         <span className="text-lg font-semibold">{formatToWon(price)}원</span>
+        <span>{sale_status === 1 ? "판매완료" : "판매중"}</span>
       </div>
     </Link>
   );

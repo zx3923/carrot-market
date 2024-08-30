@@ -12,6 +12,7 @@ async function getInitialProducts() {
       created_at: true,
       photo: true,
       id: true,
+      sale_status: true,
     },
     take: 5,
     orderBy: {
