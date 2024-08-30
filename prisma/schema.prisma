@@ -30,6 +30,8 @@ model User {
   likes      Like[]
   chat_rooms ChatRoom[]
   messages   Message[]
+  sales       Sale[]
+  purchases   Purchase[]
 }
 
 model SMSToken {
@@ -51,6 +53,8 @@ model Product {
   updated_at  DateTime @updatedAt
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      Int
+  sales       Sale[]
+  purchases   Purchase[]
 }
 
 model Post {
@@ -104,4 +108,24 @@ model Message {
   user       User     @relation(fields: [userId], references: [id])
   chatRoomId String
   userId     Int
+}
+
+model Purchase {
+  id         Int      @id @default(autoincrement())
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId  Int
+  buyer      User     @relation(fields: [buyerId], references: [id], onDelete: Cascade)
+  buyerId    Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model Sale {
+  id         Int      @id @default(autoincrement())
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId  Int
+  seller     User     @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+  sellerId   Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
