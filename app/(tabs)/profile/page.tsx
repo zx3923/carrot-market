@@ -92,12 +92,8 @@ export default async function Profile() {
           <Link href="/profile/purchase">
             <h1>구매 내역</h1>
           </Link>
-          {firstPurchaseList.map((item) => (
-            <Link
-              href={`/products/${item.id}`}
-              key={item.id}
-              className="flex gap-4"
-            >
+          {firstPurchaseList.map((item, i) => (
+            <Link href={`/products/${item.id}`} key={i} className="flex gap-4">
               <div className="relative size-28 rounded-md overflow-hidden">
                 <Image
                   fill
@@ -122,7 +118,11 @@ export default async function Profile() {
             <h1>판매 내역</h1>
           </Link>
           {firstSaleList.map((item) => (
-            <Link href={`/products/${item.id}`} className="flex gap-4">
+            <Link
+              href={`/products/${item.id}`}
+              key={item.id}
+              className="flex gap-4"
+            >
               <div className="relative size-28 rounded-md overflow-hidden">
                 <Image
                   fill
