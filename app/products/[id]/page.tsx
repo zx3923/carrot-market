@@ -122,6 +122,12 @@ export default async function ProductDetail({
             productId: id,
           },
         });
+        const saleProduct = await db.sale.create({
+          data: {
+            sellerId: product.userId,
+            productId: id,
+          },
+        });
       }
     }
     redirect("/products");

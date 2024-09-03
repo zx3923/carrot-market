@@ -26,32 +26,63 @@ async function getUser() {
 
 async function getPurchase() {
   const session = await getSession();
-  const purchaseList = await db.purchase.findMany({
+  const data = await db.product.findMany({
+    select: {
+      title: true,
+      price: true,
+      created_at: true,
+      photo: true,
+      id: true,
+      sale_status: true,
+    },
     where: {
-      buyerId: session.id,
+      purchases: {
+        some: {
+          buyerId: session.id,
+        },
+      },
+    },
+    take: 2,
+    orderBy: {
+      created_at: "desc",
     },
   });
-  return purchaseList;
+  return data;
 }
 
 async function getSale() {
   const session = await getSession();
-  const saleList = await db.sale.findMany({
+  const data = await db.product.findMany({
+    select: {
+      title: true,
+      price: true,
+      created_at: true,
+      photo: true,
+      id: true,
+      sale_status: true,
+    },
     where: {
-      sellerId: session.id,
+      sales: {
+        some: {
+          sellerId: session.id,
+        },
+      },
+    },
+    take: 2,
+    orderBy: {
+      created_at: "desc",
     },
   });
-  return saleList;
+  return data;
 }
 
 async function getProducts(id: number) {
   const product = await db.product.findMany({
     where: {
-      id,
+      userId: id,
     },
     take: 2,
   });
-  console.log("@@@@");
   console.log(product);
   return product;
 }
@@ -60,22 +91,6 @@ export default async function Profile() {
   const user = await getUser();
   const purchaseList = await getPurchase();
   const saleList = await getSale();
-  const firstPurchaseList = purchaseList[0]
-    ? await getProducts(purchaseList[0].productId)
-    : [];
-  const firstSaleList = saleList[0]
-    ? await getProducts(saleList[0].productId)
-    : [];
-  // const firstPurchaseList = [];
-  // const firstSaleList = [];
-  // if (purchaseList[0]) {
-  //   firstPurchaseList.push(await getProducts(purchaseList[0].productId));
-  // }
-  // if (saleList[0]) {
-  //   firstSaleList.push(await getProducts(saleList[0].productId));
-  // }
-  // console.log(firstPurchaseList);
-  console.log(firstSaleList);
   const logOut = async () => {
     "use server";
     const session = await getSession();
@@ -90,10 +105,14 @@ export default async function Profile() {
         <h1 className="text-xl">나의 거래</h1>
         <div>
           <Link href="/profile/purchase">
-            <h1>구매 내역</h1>
+            <h1 className="mb-2">구매 내역</h1>
           </Link>
-          {firstPurchaseList.map((item, i) => (
-            <Link href={`/products/${item.id}`} key={i} className="flex gap-4">
+          {purchaseList.map((item, i) => (
+            <Link
+              href={`/products/${item.id}`}
+              key={i}
+              className="flex gap-4 mb-4"
+            >
               <div className="relative size-28 rounded-md overflow-hidden">
                 <Image
                   fill
@@ -110,18 +129,18 @@ export default async function Profile() {
                 <span className="text-lg font-semibold">
                   {formatToWon(item.price)}원
                 </span>
-                <span>{item.sale_status === 1 ? "판매완료" : "판매중"}</span>
+                <span>구매완료</span>
               </div>
             </Link>
           ))}
           <Link href="/profile/sale">
-            <h1>판매 내역</h1>
+            <h1 className="mb-2">판매 내역</h1>
           </Link>
-          {firstSaleList.map((item) => (
+          {saleList.map((item) => (
             <Link
               href={`/products/${item.id}`}
               key={item.id}
-              className="flex gap-4"
+              className="flex gap-4 mb-4"
             >
               <div className="relative size-28 rounded-md overflow-hidden">
                 <Image
@@ -139,7 +158,7 @@ export default async function Profile() {
                 <span className="text-lg font-semibold">
                   {formatToWon(item.price)}원
                 </span>
-                <span>{item.sale_status === 1 ? "판매완료" : "판매중"}</span>
+                <span>판매완료</span>
               </div>
             </Link>
           ))}
