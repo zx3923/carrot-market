@@ -173,7 +173,12 @@ export default async function ProductDetail({
           <button className="primary-btn text-lg p-2.5">채팅하기</button>
         </form>
         <form action={buyProduct}>
-          <button className="primary-btn text-lg p-2.5">구매하기</button>
+          <button
+            className="primary-btn text-lg p-2.5 disabled:bg-neutral-400  disabled:text-neutral-300 disabled:cursor-not-allowed"
+            disabled={product.sale_status === 1 ? true : false}
+          >
+            구매하기
+          </button>
         </form>
       </div>
     </div>

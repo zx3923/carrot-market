@@ -38,7 +38,7 @@ export default async function Products() {
       <h1 className="text-2xl font-bold">상품</h1>
       <ProductList initialProducts={initialProducts} />
       <Link
-        href="/add/post"
+        href="/add/product"
         className="bg-orange-500 flex items-center justify-center rounded-full size-16 fixed bottom-24 right-8 text-white transition-colors hover:bg-orange-400"
       >
         <PlusIcon className="size-10" />

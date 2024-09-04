@@ -1,6 +1,6 @@
 "use client";
 
-import { deleteProduct } from "@/app/add/post/actions";
+import { deleteProduct } from "@/app/add/product/actions";
 
 interface DeleteBtnProps {
   id: number;

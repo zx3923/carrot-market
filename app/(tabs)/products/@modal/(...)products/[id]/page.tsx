@@ -34,7 +34,7 @@ export default async function Modal({ params }: { params: { id: string } }) {
   const isOwner = session.id === product.userId;
 
   return (
-    <div className="max-w-screen-sm flex justify-center items-center bg-black bg-opacity-60">
+    <div className="absolute w-full h-full z-50 flex items-center justify-center bg-black bg-opacity-60 left-0 top-0">
       <div className="relative bg-white rounded-lg shadow-lg max-w-4xl w-full h-auto p-6">
         <CloseBtn />
         <h1 className="text-2xl font-bold text-gray-900 mb-4 border-b pb-2">
@@ -46,7 +46,7 @@ export default async function Modal({ params }: { params: { id: string } }) {
               fill
               src={`${product.photo}/public`}
               alt={product.title}
-              className="object-cover"
+              className="object-contain"
             />
           </div>
           <div className="flex flex-col justify-between">
@@ -66,7 +66,7 @@ export default async function Modal({ params }: { params: { id: string } }) {
                     fill
                     src={`${product.user.avatar}/avatar`}
                     alt={product.user.user_name}
-                    className="object-cover"
+                    className="object-contain"
                   />
                 ) : (
                   <UserIcon />
@@ -90,3 +90,29 @@ export default async function Modal({ params }: { params: { id: string } }) {
     </div>
   );
 }
+// "use client";
+
+// import { PhotoIcon, XMarkIcon } from "@heroicons/react/24/solid";
+// import { useRouter } from "next/navigation";
+
+// export default function Modal({ params }: { params: { id: string } }) {
+//   const router = useRouter();
+//   const onCloseClick = () => {
+//     router.back();
+//   };
+//   return (
+//     <div className="absolute w-full h-full z-50 flex items-center justify-center bg-black bg-opacity-60 left-0 top-0">
+//       <button
+//         onClick={onCloseClick}
+//         className="absolute right-5 top-5 text-neutral-200"
+//       >
+//         <XMarkIcon className="size-10" />
+//       </button>
+//       <div className="max-w-screen-sm h-1/2  flex justify-center w-full">
+//         <div className="aspect-square  bg-neutral-700 text-neutral-200  rounded-md flex justify-center items-center">
+//           <PhotoIcon className="h-28" />
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }

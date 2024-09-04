@@ -1,32 +1,21 @@
 "use client";
 
-import Image from "next/image";
-import Input from "./input";
-import Button from "./button";
+import Button from "@/components/button";
+import Input from "@/components/input";
+import { PhotoIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
+import { getUploadUrl, uploadProduct } from "./actions";
 import { useFormState } from "react-dom";
-import { getUploadUrl } from "@/app/add/product/actions";
-import { editAction } from "@/app/products/[id]/edit/actions";
 
-interface IEditProps {
-  product: {
-    id: number;
-    title: string;
-    photo: string;
-    description: string;
-    price: number;
-  };
-}
+export default function AddProduct() {
+  const [preview, setPreview] = useState("");
+  const [uploadUrl, setUploadUrl] = useState("");
+  const [imageId, setImageId] = useState("");
 
-export default function EditForm({ product }: IEditProps) {
-  const [preview, setPreview] = useState<string | null>(null);
-  const [uploadUrl, setUploadUrl] = useState<string>("");
-  const [imageId, setImageId] = useState<string>("");
-
-  const onImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
       target: { files },
-    } = e;
+    } = event;
     if (!files) {
       return;
     }
@@ -37,7 +26,6 @@ export default function EditForm({ product }: IEditProps) {
         error: "이미지 파일만 업로드 가능합니다.",
       };
     }
-
     const fileSizeInMb = file.size / (1024 * 1024);
 
     if (fileSizeInMb > 2) {
@@ -49,7 +37,7 @@ export default function EditForm({ product }: IEditProps) {
     const url = URL.createObjectURL(file);
     setPreview(url);
 
-    const { result, success } = await getUploadUrl();
+    const { success, result } = await getUploadUrl();
     if (success) {
       const { id, uploadURL } = result;
       setUploadUrl(uploadURL);
@@ -68,55 +56,51 @@ export default function EditForm({ product }: IEditProps) {
       method: "post",
       body: cloudflareForm,
     });
-    console.log(await response.text());
     if (response.status !== 200) {
       return;
     }
     const photoUrl = `https://imagedelivery.net/ZP9kJzPJnmRlD3LZ99JLsg/${imageId}`;
     formData.set("photo", photoUrl);
-    return editAction(prevState, formData);
+    return uploadProduct(prevState, formData);
   };
 
   const [state, action] = useFormState(interceptAction, null);
 
   return (
     <div>
-      <form className="p-5 flex flex-col gap-5" action={action}>
-        <div className="relative aspect-square w-full bg-contain">
-          {preview ? (
-            <label
-              htmlFor="photo"
-              className="border-2 aspect-square flex items-center justify-center flex-col text-neutral-300 border-neutral-300 rounded-md border-dashed cursor-pointer bg-center bg-cover"
-              style={{
-                backgroundImage: `url(${preview})`,
-              }}
-            />
-          ) : (
-            <Image
-              src={`${product.photo}/public`}
-              alt={product.title}
-              fill
-              className="object-cover rounded-md"
-            />
-          )}
-        </div>
-
+      <form action={action} className="p-5 flex flex-col gap-5">
+        <label
+          htmlFor="photo"
+          className="border-2 aspect-square flex items-center justify-center flex-col text-neutral-300 border-neutral-300 rounded-md border-dashed cursor-pointer bg-center bg-cover"
+          style={{
+            backgroundImage: `url(${preview})`,
+          }}
+        >
+          {" "}
+          {preview === "" ? (
+            <>
+              <PhotoIcon className="w-20" />
+              <div className="text-neutral-400 text-sm">
+                사진을 추가해주세요.
+                {state?.fieldErrors.photo}
+              </div>
+            </>
+          ) : null}
+        </label>
         <input
           onChange={onImageChange}
           type="file"
           id="photo"
           name="photo"
           accept="image/*"
-          className="mt-2"
+          className="hidden"
         />
-        <input type="hidden" name="id" value={product.id} />
         <Input
           name="title"
           required
           placeholder="제목"
           type="text"
           errors={state?.fieldErrors.title}
-          defaultValue={product.title}
         />
         <Input
           name="price"
@@ -124,7 +108,6 @@ export default function EditForm({ product }: IEditProps) {
           required
           placeholder="가격"
           errors={state?.fieldErrors.price}
-          defaultValue={product.price}
         />
         <Input
           name="description"
@@ -132,7 +115,6 @@ export default function EditForm({ product }: IEditProps) {
           required
           placeholder="자세한 설명"
           errors={state?.fieldErrors.description}
-          defaultValue={product.description}
         />
         <Button text="작성 완료" />
       </form>
