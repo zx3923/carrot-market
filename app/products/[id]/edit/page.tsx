@@ -23,7 +23,6 @@ async function getProduct(id: number) {
 
 export default async function EditPage({ params }: { params: { id: string } }) {
   const id = Number(params.id);
-  console.log(id);
   const product = await getCachedProduct(id);
   if (!product) {
     return notFound();

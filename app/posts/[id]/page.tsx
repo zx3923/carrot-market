@@ -9,6 +9,8 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { UserIcon } from "@heroicons/react/24/solid";
 import LikeButton from "@/components/like-btn";
+import Link from "next/link";
+import DeletePosts from "@/components/delete-posts";
 
 async function getPost(id: number) {
   try {
@@ -89,6 +91,8 @@ export default async function PostDetail({
   }
 
   const { likeCount, isLiked } = await getCachedLikeStatus(id);
+  const session = await getSession();
+  const isOwner = session.id === post.userId;
   return (
     <div className="p-5 text-white">
       <div className="flex items-center gap-2 mb-2">
@@ -117,7 +121,20 @@ export default async function PostDetail({
           <EyeIcon className="size-5" />
           <span>조회 {post.views}</span>
         </div>
-        <LikeButton isLiked={isLiked} likeCount={likeCount} postId={id} />
+        <div className="flex justify-between w-full">
+          <LikeButton isLiked={isLiked} likeCount={likeCount} postId={id} />
+          {isOwner ? (
+            <div className="flex gap-4 text-orange-500 ">
+              <Link
+                href={`/posts/${post.id}/edit`}
+                className="hover:text-white flex items-center"
+              >
+                수정
+              </Link>
+              <DeletePosts id={id} />
+            </div>
+          ) : null}
+        </div>
       </div>
     </div>
   );
