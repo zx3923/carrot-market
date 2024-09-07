@@ -11,6 +11,7 @@ import { UserIcon } from "@heroicons/react/24/solid";
 import LikeButton from "@/components/like-btn";
 import Link from "next/link";
 import DeletePosts from "@/components/delete-posts";
+import CommentForm from "@/components/comment-form";
 
 async function getPost(id: number) {
   try {
@@ -42,6 +43,20 @@ async function getPost(id: number) {
     return null;
   }
 }
+
+async function getComment(id: number) {
+  const comment = await db.comment.findMany({
+    where: {
+      postId: id,
+    },
+  });
+
+  return comment;
+}
+
+const getCachedComment = nextCache(getComment, ["comment"], {
+  tags: ["comment"],
+});
 
 const getCachedPost = nextCache(getPost, ["post-detail"], {
   tags: ["post-detail"],
@@ -89,6 +104,7 @@ export default async function PostDetail({
   if (!post) {
     return notFound();
   }
+  const comment = await getCachedComment(id);
 
   const { likeCount, isLiked } = await getCachedLikeStatus(id);
   const session = await getSession();
@@ -135,6 +151,14 @@ export default async function PostDetail({
             </div>
           ) : null}
         </div>
+        <div>
+          {comment.map((item) => (
+            <span key={item.id} className="flex">
+              {item.payload}
+            </span>
+          ))}
+        </div>
+        <CommentForm id={id} />
       </div>
     </div>
   );

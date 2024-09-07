@@ -5,11 +5,12 @@ import { notFound, redirect } from "next/navigation";
 import { UserIcon } from "@heroicons/react/24/solid";
 import { formatToWon } from "@/lib/utils";
 import DeleteBtn from "@/components/delete-btn";
-import { unstable_cache as nextCache } from "next/cache";
+import { unstable_cache as nextCache, revalidateTag } from "next/cache";
 
 const getCachedProduct = nextCache(getProduct, ["product-detail"], {
   tags: ["product-detail"],
 });
+
 async function getProductTitle(id: number) {
   const product = await db.product.findUnique({
     where: {
@@ -130,6 +131,7 @@ export default async function ProductDetail({
         });
       }
     }
+    revalidateTag("product-detail");
     redirect("/products");
   };
 
