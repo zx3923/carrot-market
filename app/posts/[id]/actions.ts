@@ -67,3 +67,13 @@ export async function addComment(prevState: any, formData: FormData) {
     }
   }
 }
+
+export async function deleteComment(id: number) {
+  const comment = await db.comment.delete({
+    where: {
+      id,
+    },
+  });
+
+  revalidateTag("comment");
+}

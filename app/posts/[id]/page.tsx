@@ -1,10 +1,8 @@
 import db from "@/lib/db";
 import { getSession } from "@/lib/session";
 import { formatToTimeAgo } from "@/lib/utils";
-import { EyeIcon, HandThumbUpIcon } from "@heroicons/react/24/solid";
-
-import { HandThumbUpIcon as OutlineHandThumbUpIcon } from "@heroicons/react/24/outline";
-import { unstable_cache as nextCache, revalidateTag } from "next/cache";
+import { EyeIcon } from "@heroicons/react/24/solid";
+import { unstable_cache as nextCache } from "next/cache";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { UserIcon } from "@heroicons/react/24/solid";
@@ -12,6 +10,7 @@ import LikeButton from "@/components/like-btn";
 import Link from "next/link";
 import DeletePosts from "@/components/delete-posts";
 import CommentForm from "@/components/comment-form";
+import DeleteComment from "@/components/delete-comment";
 
 async function getPost(id: number) {
   try {
@@ -48,6 +47,14 @@ async function getComment(id: number) {
   const comment = await db.comment.findMany({
     where: {
       postId: id,
+    },
+    include: {
+      user: {
+        select: {
+          avatar: true,
+          user_name: true,
+        },
+      },
     },
   });
 
@@ -151,11 +158,38 @@ export default async function PostDetail({
             </div>
           ) : null}
         </div>
-        <div>
+        <div className="w-full">
           {comment.map((item) => (
-            <span key={item.id} className="flex">
-              {item.payload}
-            </span>
+            <div
+              key={item.id}
+              className="flex justify-between border-b border-neutral-500 mb-4 pb-4"
+            >
+              <div>
+                <div className="flex mb-2">
+                  <div className="size-5 relative rounded-full overflow-hidden mb-2">
+                    {item.user.avatar ? (
+                      <Image
+                        fill
+                        src={`${item.user.avatar}/avatar`}
+                        alt={item.user.user_name}
+                        className="object-contain"
+                      />
+                    ) : (
+                      <UserIcon className="size-5" />
+                    )}
+                  </div>
+                  <h3 className="text-sm font-semibold ml-2">
+                    {item.user.user_name}
+                  </h3>
+                </div>
+                <span className="text-xs font-semibold">{item.payload}</span>
+              </div>
+              <div>
+                {session.id === item.userId ? (
+                  <DeleteComment id={item.id} />
+                ) : null}
+              </div>
+            </div>
           ))}
         </div>
         <CommentForm id={id} />
