@@ -10,10 +10,10 @@ export default function DeleteBtn({ id }: DeleteBtnProps) {
   return (
     <>
       <button
-        className="bg-red-500 px-5 py-2.5 rounded-md text-white font-semibold"
+        className="text-lg p-2.5 bg-red-500 rounded-md text-white font-medium hover:bg-red-400 transition-colors"
         onClick={() => deleteProduct(id)}
       >
-        Delete product
+        삭제하기
       </button>
     </>
   );
