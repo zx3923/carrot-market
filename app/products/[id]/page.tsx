@@ -136,8 +136,8 @@ export default async function ProductDetail({
   };
 
   return (
-    <div>
-      <div className="relative aspect-square w-1/2 ml-auto mr-auto">
+    <div className="mt-10 min-h-[600px]">
+      <div className="relative aspect-square w-1/2 mx-auto">
         <Image fill src={`${product.photo}/public`} alt={product.title} />
       </div>
       <div className="p-5 flex items-center gap-3 border-b border-neutral-700">
@@ -161,27 +161,34 @@ export default async function ProductDetail({
         <h1 className="text-2xl font-semibold">{product.title}</h1>
         <p>{product.description}</p>
       </div>
-      <div className="fixed w-full bottom-0 left-0 p-5 pb-10 bg-neutral-800 flex justify-between items-center">
+      <div className="fixed w-full left-auto right-auto max-w-screen-sm bottom-0 left-0 p-5 pb-10 bg-neutral-800 flex justify-between items-center">
         <span className="font-semibold text-xl">
           {formatToWon(product.price)}원
         </span>
-        {isOwner ? (
-          // <button className="bg-red-500 px-5 py-2.5 rounded-md text-white font-semibold">
-          //   Delete product
-          // </button>
-          <DeleteBtn id={id} />
-        ) : null}
-        <form action={createChatRoom}>
-          <button className="primary-btn text-lg p-2.5">채팅하기</button>
-        </form>
-        <form action={buyProduct}>
-          <button
-            className="primary-btn text-lg p-2.5 disabled:bg-neutral-400  disabled:text-neutral-300 disabled:cursor-not-allowed"
-            disabled={product.sale_status === 1 ? true : false}
-          >
-            구매하기
-          </button>
-        </form>
+        <div className="flex gap-4">
+          {isOwner ? (
+            // <button className="bg-red-500 px-5 py-2.5 rounded-md text-white font-semibold">
+            //   Delete product
+            // </button>
+            <DeleteBtn id={id} />
+          ) : null}
+          <form action={createChatRoom}>
+            <button
+              className="primary-btn text-lg p-2.5 disabled:bg-neutral-400 disabled:text-neutral-300 disabled:cursor-not-allowed"
+              disabled={isOwner ? true : false}
+            >
+              채팅하기
+            </button>
+          </form>
+          <form action={buyProduct}>
+            <button
+              className="primary-btn text-lg p-2.5 disabled:bg-neutral-400  disabled:text-neutral-300 disabled:cursor-not-allowed"
+              disabled={product.sale_status === 1 || isOwner ? true : false}
+            >
+              구매하기
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );

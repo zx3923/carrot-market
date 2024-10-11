@@ -84,7 +84,7 @@ export default function PostList({ initialPosts }: PostListProps) {
         </Link>
       ))}
       {!isLastPage ? (
-        <span ref={trigger} className="ml-auto mr-auto">
+        <span ref={trigger} className="mx-auto">
           {isLoading ? <Spinner /> : ""}
         </span>
       ) : null}

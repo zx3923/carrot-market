@@ -55,7 +55,7 @@ export default function ProductList({ initialProducts }: ProductListProps) {
         <ListProduct key={product.id} {...product} />
       ))}
       {!isLastPage ? (
-        <span ref={trigger} className="ml-auto mr-auto">
+        <span ref={trigger} className="mx-auto">
           {isLoading ? <Spinner /> : ""}
         </span>
       ) : null}
