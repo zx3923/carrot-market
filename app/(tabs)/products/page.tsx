@@ -14,7 +14,7 @@ async function getInitialProducts() {
       id: true,
       sale_status: true,
     },
-    take: 5,
+    take: 7,
     orderBy: {
       created_at: "desc",
     },

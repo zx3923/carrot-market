@@ -9,6 +9,7 @@ import {
   HandThumbUpIcon,
 } from "@heroicons/react/24/outline";
 import { getMorePosts } from "@/app/(tabs)/life/actions";
+import Spinner from "./loading-spinner";
 
 interface PostListProps {
   initialPosts: InitialPosts;
@@ -83,11 +84,8 @@ export default function PostList({ initialPosts }: PostListProps) {
         </Link>
       ))}
       {!isLastPage ? (
-        <span
-          ref={trigger}
-          className="text-sm font-semibold bg-orange-500 w-fit mx-auto px-3 py-2 rounded-md hover:opacity-90 active:scale-95"
-        >
-          {isLoading ? "로딩 중" : "더보기"}
+        <span ref={trigger} className="ml-auto mr-auto">
+          {isLoading ? <Spinner /> : ""}
         </span>
       ) : null}
     </div>

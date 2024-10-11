@@ -24,7 +24,7 @@ async function getInitialPosts() {
         },
       },
     },
-    take: 5,
+    take: 7,
     orderBy: {
       created_at: "desc",
     },
