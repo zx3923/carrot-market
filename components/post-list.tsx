@@ -16,6 +16,7 @@ interface PostListProps {
 }
 
 export default function PostList({ initialPosts }: PostListProps) {
+  console.log(initialPosts);
   const [posts, setPosts] = useState(initialPosts);
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(0);
