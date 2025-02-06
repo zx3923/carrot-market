@@ -29,7 +29,6 @@ async function getInitialPosts() {
       created_at: "desc",
     },
   });
-  console.log("check", posts);
   return posts;
 }
 
