@@ -3,7 +3,7 @@
 import { useFormState } from "react-dom";
 import Button from "./button";
 import Input from "./input";
-import { uploadPost } from "@/app/add/post/actions";
+import { uploadPost } from "@/app/(main)/add/post/actions";
 
 interface IEditPostProps {
   post: {

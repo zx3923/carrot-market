@@ -1,13 +1,13 @@
 "use client";
 
-import { InitialChatMessages } from "@/app/chats/[id]/page";
+import { InitialChatMessages } from "@/app/(main)/chats/[id]/page";
 import { formatToTimeAgo } from "@/lib/utils";
 import { ArrowUpCircleIcon } from "@heroicons/react/24/solid";
 import { createClient, RealtimeChannel } from "@supabase/supabase-js";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { UserIcon } from "@heroicons/react/24/solid";
-import { saveMessage } from "@/app/chats/actions";
+import { saveMessage } from "@/app/(main)/chats/actions";
 
 const SUPABASE_PUBLIC_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6eW1sbXRtdmp6eWRidHVxb250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjQ3MjEzODUsImV4cCI6MjA0MDI5NzM4NX0.dE0ah9OZ1afnWPBgth1KZ7rIGx2nAnl1WpXoMCgZuHk";

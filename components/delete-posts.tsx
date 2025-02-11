@@ -1,6 +1,6 @@
 "use client";
 
-import { deletePosts } from "@/app/posts/[id]/edit/actions";
+import { deletePosts } from "@/app/(main)/posts/[id]/edit/actions";
 
 interface DeletePostsProps {
   id: number;

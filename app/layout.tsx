@@ -21,8 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="bg-neutral-900">
-        <TopBar />
-        <div className=" text-white max-w-screen-sm mx-auto">{children}</div>
+        <div className=" text-white">{children}</div>
       </body>
     </html>
   );

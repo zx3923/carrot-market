@@ -5,8 +5,8 @@ import Input from "./input";
 import Button from "./button";
 import { useState } from "react";
 import { useFormState } from "react-dom";
-import { getUploadUrl } from "@/app/add/product/actions";
-import { editAction } from "@/app/products/[id]/edit/actions";
+import { getUploadUrl } from "@/app/(main)/add/product/actions";
+import { editAction } from "@/app/(main)/products/[id]/edit/actions";
 
 interface IEditProps {
   product: {

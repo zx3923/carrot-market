@@ -1,6 +1,6 @@
 "use client";
 
-import { deleteComment } from "@/app/posts/[id]/actions";
+import { deleteComment } from "@/app/(main)/posts/[id]/actions";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 
 interface DeleteCommentProps {

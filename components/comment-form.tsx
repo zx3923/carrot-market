@@ -1,6 +1,6 @@
 "use client";
 
-import { addComment } from "@/app/posts/[id]/actions";
+import { addComment } from "@/app/(main)/posts/[id]/actions";
 import { useFormState } from "react-dom";
 import Button from "./button";
 import { useState } from "react";

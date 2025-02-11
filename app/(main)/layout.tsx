@@ -1,12 +1,14 @@
-import TabBar from "@/components/tab-bar";
 import TopBar from "@/components/top-bar";
 
-export default function TabLayout({ children }: { children: React.ReactNode }) {
+export default function TestLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <div>
       <TopBar />
       <div className=" max-w-screen-sm mx-auto">{children}</div>
-      <TabBar />
     </div>
   );
 }
